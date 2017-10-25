@@ -106,9 +106,11 @@ def int2base(x, base):
     return ''.join(digits)
 
 def pp(args, p, l):
-    if not args.count:
-        print int2base(p, args.base)
-    return args.type(args, p, l) + 1
+    if is_probable_prime(p):
+        if not args.count:
+            print int2base(p, args.base)
+        return args.type(args, p, l) + 1
+    return 0
 
 def left(args, n, l):
     k = args.base ** l
@@ -116,8 +118,7 @@ def left(args, n, l):
     count = 0
     for i in xrange(1, args.base):
         t = n + i * k
-        if is_probable_prime(t):
-            count += pp(args, t, l)
+        count += pp(args, t, l)
     return count
 
 def right(args, n, l):
@@ -125,8 +126,7 @@ def right(args, n, l):
     count = 0
     for i in xrange(1, args.base):
         t = n + i
-        if is_probable_prime(t):
-            count += pp(args, t, None)
+        count += pp(args, t, None)
     return count
 
 def palindromic(args, n, l):
@@ -136,15 +136,12 @@ def palindromic(args, n, l):
     count = 0
     for i in xrange(1, args.base):
         t = n + i * k + i
-        if is_probable_prime(t):
-            count += pp(args, t, l)
+        count += pp(args, t, l)
     return count
 
 def run(args):
     count = 0
     for i in xrange(2, args.base):
-        if not is_probable_prime(i):
-            continue
         count += pp(args, i, 1)
     if args.count:
         print count
