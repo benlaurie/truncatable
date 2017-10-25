@@ -68,12 +68,12 @@ def is_probable_prime(n):
     def try_composite(a):
         if pow(a, d, n) == 1:
             return False
-        for i in range(s):
+        for i in xrange(s):
             if pow(a, 2**i * d, n) == n-1:
                 return False
         return True # n is definitely composite
  
-    for i in range(_mrpt_num_trials):
+    for i in xrange(_mrpt_num_trials):
         a = random.randrange(2, n)
         if try_composite(a):
             return False
@@ -109,7 +109,7 @@ def left(args, n, l):
     k = args.base ** l
     l += 1
     count = 0
-    for i in range(1, args.base):
+    for i in xrange(1, args.base):
         t = n + i * k
         if is_probable_prime(t):
             if not args.count:
@@ -133,7 +133,7 @@ def palindromic(args, n, l):
     n *= args.base
     l += 1
     count = 0
-    for i in range(1, args.base):
+    for i in xrange(1, args.base):
         t = n + i * k + i
         if is_probable_prime(t):
             if not args.count:
