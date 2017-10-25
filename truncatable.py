@@ -117,16 +117,14 @@ def left(args, n, l):
     l += 1
     count = 0
     for i in xrange(1, args.base):
-        t = n + i * k
-        count += pp(args, t, l)
+        count += pp(args, n + i * k, l)
     return count
 
 def right(args, n, l):
     n *= args.base
     count = 0
     for i in xrange(1, args.base):
-        t = n + i
-        count += pp(args, t, None)
+        count += pp(args, n + i, None)
     return count
 
 def palindromic(args, n, l):
@@ -135,8 +133,7 @@ def palindromic(args, n, l):
     l += 1
     count = 0
     for i in xrange(1, args.base):
-        t = n + i * k + i
-        count += pp(args, t, l)
+        count += pp(args, n + i * k + i, l)
     return count
 
 def run(args):
