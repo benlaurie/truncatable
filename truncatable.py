@@ -136,6 +136,53 @@ def palindromic(args, n, l):
         count += pp(args, n + i * k + i, l)
     return count
 
+def is_l(args, p):
+    while p:
+        if p == 1 or not is_probable_prime(p):
+            return False
+        t = int2base(p, args.base)[1:]
+        p = 0
+        while t:
+            p = p * args.base + int(t[0], args.base)
+            t = t[1:]
+    return True
+
+def landr(args, n, l):
+    n *= args.base
+    count = 0
+    for i in xrange(1, args.base):
+        t = n + i
+        if is_probable_prime(t):
+            if is_l(args, t):
+                if not args.count:
+                    print int2base(t, args.base)
+                else:
+                    count += 1
+            count += landr(args, t, None)
+    return count
+
+def is_r(args, p):
+    while p:
+        if p == 1 or not is_probable_prime(p):
+            return False
+        p //= args.base
+    return True
+
+def landr2(args, n, l):
+    k = args.base ** l
+    l += 1
+    count = 0
+    for i in xrange(1, args.base):
+        t = n + i * k
+        if is_probable_prime(t):
+            if is_r(args, t):
+                if not args.count:
+                    print int2base(t, args.base)
+                else:
+                    count += 1
+            count += landr2(args, t, l)
+    return count
+
 def run(args):
     count = 0
     for i in xrange(2, args.base):
@@ -147,11 +194,15 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--base', type=int, default=10,help='base to generate in')
     parser.add_argument('--left', action='store_const', dest='type',
-                        const=left, default=left, help='find left truncatable primes')
+                        const=left, default=left, help='find left truncatable primes (default)')
     parser.add_argument('--right', action='store_const', dest='type',
                         const=right, help='find right truncatable primes')
     parser.add_argument('--palindromic', action='store_const', dest='type',
                         const=palindromic, help='find palindromic truncatable primes')
+    parser.add_argument('--landr', action='store_const', dest='type',
+                        const=landr, help='find left and right truncatable primes')
+    parser.add_argument('--landr2', action='store_const', dest='type',
+                        const=landr2, help='find left and right truncatable primes (often slower)')
     parser.add_argument('--count', action='store_true', help='count instead of listing')
     args = parser.parse_args()
     #print args
